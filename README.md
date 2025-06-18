@@ -80,7 +80,7 @@ project/
 ├── server.py              # Server script
 ├── string_generator.py    # Modular string generator
 ├── rules.py               # Rule classes and manager
-├── chains.txt             # (optional) input data
+├── chains.txt             # (generated) input data
 ├── results.txt            # (generated) output data
 └── Readme
 ```
