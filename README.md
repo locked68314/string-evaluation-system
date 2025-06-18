@@ -11,9 +11,8 @@ This project implements a scalable client-server system for evaluating strings b
 - Filters strings based on rules (e.g., ignore strings starting with `"aa"` case-insensitive).
 - Calculates a **coefficient** for accepted strings:
 
-  \[
-  \text{coefficient} = \frac{1.5 \cdot \text{letter_count} + 2 \cdot \text{digit_count}}{\text{space_count}}
-  \]
+  $$\text{coefficient} = \frac{1.5 \cdot \text{letter-count} + 2 \cdot \text{digit-count}}{\text{space-count}}
+  $$
 
 - Returns the coefficient to the client as a string (e.g. `"5.3333\n"`).
 - Logs ignored strings with a custom reason per rule.
