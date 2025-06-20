@@ -24,12 +24,36 @@ class BaseRule(ABC):
         pass
 
 class RuleManager:
+    """
+    Manages and applies a list of rule objects to input strings.
+
+    Iterates through all rules to determine whether a string should be ignored,
+    and provides the reason for ignoring it.
+
+    Attributes:
+        reglas (list[BaseRule]): List of rule instances to apply.
+    """
     def __init__(self, reglas: list[BaseRule]):
+        """
+        Args:
+            reglas (list[BaseRule]): A list of rule objects implementing the BaseRule interface.
+        """
         self.reglas = reglas
 
     def test_rules(self, cadena: str) -> str | None:
+        """
+        Checks if the input string should be ignored based on the configured rules.
+
+        Evaluates all rules in order and returns the first matching rule's message.
+
+        Args:
+            cadena (str): The string to evaluate.
+
+        Returns:
+            str | None: A message from the matching rule, or None if the string is allowed.
+        """
         for regla in self.reglas:
-            if not regla.is_valid(cadena):
+            if not regla.test_rule(cadena):
                 return regla.message
         return None
 
