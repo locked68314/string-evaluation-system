@@ -6,6 +6,14 @@ from logging_config import logger
 import argparse
 
 def parse_range(s: str):
+    """Parses a string as either a fixed integer or a range in the form 'start:end'.
+
+    Args:
+        s (str): Input string representing a number or range.
+
+    Returns:
+        tuple[int, int]: A tuple representing the lower and upper bounds.
+    """
     if ':' in s:
         ini, fin = map(int, s.split(':'))
         return (ini, fin)
@@ -13,6 +21,11 @@ def parse_range(s: str):
     return (val, val)
 
 def parse_args():
+    """Parses command-line arguments using argparse.
+
+    Returns:
+        argparse.Namespace: Parsed arguments with values for count, length, etc.
+    """
     parser = argparse.ArgumentParser(description="String generator client.")
     parser.add_argument('--count', type=int, default=10, help="Number of strings to generate.")
     parser.add_argument('--length', type=parse_range, default="50:100", help="Fixed length or range (e.g. 10 or 10:20).")
@@ -23,6 +36,12 @@ def parse_args():
     return parser.parse_args()
 
 def main():
+    # Main execution flow:
+    # - Generates strings
+    # - Connects to server
+    # - Sends each string, receives response
+    # - Writes result to output file
+    # - Measures and prints total time
     args = parse_args()
     config = StringGeneratorConfig(length=args.length, count=args.count, blank_spaces=args.spaces)
 
@@ -39,6 +58,9 @@ def main():
     logger.info("done creating chains.txt")
 
     start_time = time.perf_counter()
+
+    # --- Open socket connection and output file ---
+    # Use context managers to ensure proper cleanup
     with socket.create_connection((HOST, PORT)) as sock, \
         open(OUTPUT_FILE, "w", encoding="utf-8") as fout, \
         open(INPUT_FILE, 'r', encoding='utf-8') as fin:
@@ -48,12 +70,18 @@ def main():
 
             data = b""
             while not data.endswith(b'\n'):
+                # Read response (ends with newline)
+                # May require multiple recv() if response is split
                 data += sock.recv(1024)
             data = data.decode('utf-8').strip()
-            if data.startswith('['):
+
+            # Interpret response:
+            # - error message → log and skip
+            # - float value → parse and store
+            if data.startswith('['): # error message recived
                 result = data
                 logger.info(f"'{result}")
-            else:
+            else: # string coefficient value recived
                 result = float(data)
                 fout.write(f"{cadena.strip()} -> {result}\n")
                 logger.info(f"'{cadena.strip()}' -> {result}")
