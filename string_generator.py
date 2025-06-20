@@ -26,7 +26,8 @@ class StringGenerator:
         return self.config.length
     
     def _get_spaces(self) -> int:
-        if isinstance(self.config.length, tuple):
+        # gets the number of blank spaces, if it is a range, returns a random number in the range
+        if isinstance(self.config.blank_spaces, tuple):
             return random.randint(self.config.blank_spaces[0], self.config.blank_spaces[1])
         return self.config.blank_spaces
     
