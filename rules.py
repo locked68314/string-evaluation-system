@@ -46,11 +46,27 @@ class StartsWithRule(BaseRule):
         message (str): The message to return if the rule is violated.
     """
     def __init__(self, prefix: str, message: str, ignore_case: bool = True,):
+        """
+        Initializes the rule with a prefix, message, and case sensitivity
+
+        Args:
+            prefix (str): The prefix to check.
+            message (str): The message  to use if the string is not valid
+            ignore_case (bool): Whether the check is case-insensitive. 
+        """
         self.prefix = prefix
         self.ignore_case = ignore_case
         self.message = message
 
-    def is_valid(self, cadena: str) -> bool:
+    def test_rule(self, cadena: str) -> bool:
+        """
+        Checks if the string starts with the specified prefix.
+
+        Args:
+            cadena (str): The input string.
+        Returns:
+            bool: True if the string passes the rule
+        """
         if self.ignore_case:
             cadena = cadena.lower()
         return not cadena.startswith(self.prefix)
