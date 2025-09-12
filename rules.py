@@ -88,10 +88,48 @@ class StartsWithRule(BaseRule):
         Checks if the string starts with the specified prefix.
 
         Args:
-            cadena (str): The input string.
+            chain (str): The input string.
         Returns:
             bool: True if the string passes the rule
         """
         if self.ignore_case:
-            cadena = cadena.lower()
-        return not cadena.startswith(self.prefix)
+            chain = chain.lower()
+        return not chain.startswith(self.prefix)
+    
+class ContainsRule(BaseRule):
+    """
+    Ignores strings that contains a given string.
+
+    Useful for filtering based on containing forbidden sub-strings.
+    Case sensitivity can be toggled.
+
+    Attributes:
+        substring (str): The sub-string to check.
+        ignore_case (bool): Whether the check is case-insensitive.
+        message (str): The message to return if the rule is violated.
+    """
+    def __init__(self, substring: str, message: str, ignore_case: bool = True,):
+        """
+        Initializes the rule with a substring, message, and case sensitivity
+
+        Args:
+            substring (str): The prefix to check.
+            message (str): The message  to use if the string is not valid
+            ignore_case (bool): Whether the check is case-insensitive. 
+        """
+        self.substring = substring
+        self.ignore_case = ignore_case
+        self.message = message
+
+    def test_rule(self, chain: str) -> bool:
+        """
+        Checks if the string contains the specified sub-string.
+
+        Args:
+            chain (str): The input string.
+        Returns:
+            bool: True if the string passes the rule
+        """
+        if self.ignore_case:
+            chain = chain.lower()
+        return not chain.find(self.substring) != -1
