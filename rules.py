@@ -8,15 +8,15 @@ class BaseRule(ABC):
     should be ignored and provide a custom message.
 
     Methods:
-        test_rule(cadena): returns True if the string passes the rule.
+        test_rule(chain): returns True if the string passes the rule.
     """
     @abstractmethod
-    def test_rule(self, cadena: str) -> bool:
+    def test_rule(self, chain: str) -> bool:
         """
         Determines whether the given string passes the rule.
 
         Args:
-            cadena (str): The input string.
+            chain (str): The input string.
 
         Returns:
             bool: True if the string passes the rule.
@@ -31,30 +31,31 @@ class RuleManager:
     and provides the reason for ignoring it.
 
     Attributes:
-        reglas (list[BaseRule]): List of rule instances to apply.
+        rules (list[BaseRule]): List of rule instances to apply.
     """
-    def __init__(self, reglas: list[BaseRule]):
+    rules: list[BaseRule]
+    def __init__(self, rules: list[BaseRule]):
         """
         Args:
-            reglas (list[BaseRule]): A list of rule objects implementing the BaseRule interface.
+            rules (list[BaseRule]): A list of rule objects implementing the BaseRule interface.
         """
-        self.reglas = reglas
+        self.rules = rules
 
-    def test_rules(self, cadena: str) -> str | None:
+    def test_rules(self, chain: str) -> str | None:
         """
         Checks if the input string should be ignored based on the configured rules.
 
         Evaluates all rules in order and returns the first matching rule's message.
 
         Args:
-            cadena (str): The string to evaluate.
+            chain (str): The string to evaluate.
 
         Returns:
             str | None: A message from the matching rule, or None if the string is allowed.
         """
-        for regla in self.reglas:
-            if not regla.test_rule(cadena):
-                return regla.message
+        for rule in self.rules:
+            if not rule.test_rule(chain):
+                return rule.message
         return None
 
 class StartsWithRule(BaseRule):
@@ -82,7 +83,7 @@ class StartsWithRule(BaseRule):
         self.ignore_case = ignore_case
         self.message = message
 
-    def test_rule(self, cadena: str) -> bool:
+    def test_rule(self, chain: str) -> bool:
         """
         Checks if the string starts with the specified prefix.
 
