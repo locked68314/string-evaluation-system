@@ -1,12 +1,12 @@
 import socket
 import threading
-from rules import StartsWithRule, RuleManager
+from rules import ContainsRule, RuleManager
 from logging_config import logger
 
 HOST = '127.0.0.1'
 PORT = 65432
 
-double_a_rule = StartsWithRule(prefix='aa', ignore_case=True, message='Double "a" rule detected')
+double_a_rule = ContainsRule(substring='aa', ignore_case=True, message='Double "a" rule detected')
 
 chain_rules = [
     double_a_rule
