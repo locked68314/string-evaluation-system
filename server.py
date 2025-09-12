@@ -13,21 +13,21 @@ chain_rules = [
 ]
 rule_manager = RuleManager(chain_rules)
 
-def get_string_weighting(cadena: str) -> float:
+def get_string_weighting(chain: str) -> float:
     """Computes the weighting coefficient of a string.
 
     Formula:
         (1.5 * letters + 2 * digits) / number of spaces
 
     Args:
-        cadena (str): The input string.
+        chain (str): The input string.
 
     Returns:
         float: The computed coefficient, or -1.0 if no spaces are present.
     """
-    letters = sum(1 for c in cadena if c.isalpha())
-    numbers = sum(1 for c in cadena if c.isdigit())
-    spaces = cadena.count(' ')
+    letters = sum(1 for c in chain if c.isalpha())
+    numbers = sum(1 for c in chain if c.isdigit())
+    spaces = chain.count(' ')
     if spaces == 0:
         return -1
     return (letters * 1.5 + numbers * 2) / spaces
