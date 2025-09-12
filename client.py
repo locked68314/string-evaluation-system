@@ -64,8 +64,8 @@ def main():
         open(OUTPUT_FILE, "w", encoding="utf-8") as fout, \
         open(INPUT_FILE, 'r', encoding='utf-8') as fin:
 
-        for cadena in fin:
-            sock.sendall((cadena).encode('utf-8'))
+        for chain in fin:
+            sock.sendall((chain).encode('utf-8'))
 
             data = b""
             while not data.endswith(b'\n'):
@@ -82,8 +82,8 @@ def main():
                 logger.info(f"'{result}")
             else: # string coefficient value recived
                 result = float(data)
-                fout.write(f"{cadena.strip()} -> {result}\n")
-                logger.info(f"'{cadena.strip()}' -> {result}")
+                fout.write(f"{chain.strip()} -> {result}\n")
+                logger.info(f"'{chain.strip()}' -> {result}")
             pass
 
     total_time = time.perf_counter() - start_time
